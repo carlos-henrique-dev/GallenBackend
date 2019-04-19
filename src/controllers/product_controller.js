@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const Product = require("../models/product_model");
 
 exports.products_get_all = (req, res, next) => {
@@ -50,7 +49,8 @@ exports.products_post = (req, res, next) => {
         .save()
         .then(result => {
             res.status(201).json({
-                message: "Product posted successfuly"
+                message: "Product posted successfuly",
+                productId: result._id
             });
         })
         .catch(error => {

@@ -1,13 +1,14 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const dbURI = require("./config/db");
+const config = require("./config/config");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 
 // importando rotas
 const costumerRoutes = require("./routes/costumers_routes");
 const productRoutes = require("./routes/products_routes");
+const drugstoreByUser = require("./routes/drugstoreByUser_routes");
 
 // configurando middlewares
 app.use(morgan("dev")); // para fazer um log das requisições
@@ -15,31 +16,18 @@ app.use(bodyParser.urlencoded({ extended: true })); // para fazer o parse das re
 app.use(bodyParser.json()); // passando as requisições para json
 
 // conectando ao mongodb atlas
-mongoose.connect(dbURI.mongoURI, {
+mongoose.connect(config.db.mongoURI, {
     useNewUrlParser: true,
     useCreateIndex: true
 });
 console.log("conectado ao banco de dados");
 
 // configurando o cors (para aceitar requisição de outros locais)
-app.use((req, res, next) => {
-    res.header("Access-Controll-Allow-Origin", "*");
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, X-requested-With, Content-Type, Accept, Authorization"
-    );
-    if (req.method === "OPTIONS") {
-        res.header(
-            "Access-Control-Allow-Methods",
-            "PUT, POST, PATCH, DELETE, GET"
-        );
-        return res.status(200).json({});
-    }
-    next();
-});
+app.use(config.cors);
 // configurando as rotas
 app.use("/costumers", costumerRoutes);
 app.use("/products", productRoutes);
+app.use("/onDutyDrugstores", drugstoreByUser);
 
 // tratando caminho inexistente
 app.use((req, res, next) => {
