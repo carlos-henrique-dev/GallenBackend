@@ -1,0 +1,61 @@
+// usuario
+[
+    {
+        "user": {
+            "id": "",
+            "username": "",
+            "email": "",
+            "password": "",
+            "productsAcquired": [{ "id": "", "acquiredAt": "" }]
+        }
+    },
+
+    // produtos
+    {
+        "products": {
+            "id": "",
+            "name": "",
+            "price": "",
+            "photo": "",
+            "acquiredAt": { "drugstoreName": "", "drugstoreId": "" }
+        }
+    },
+
+    {
+        "drugstore": {
+            "id": "",
+            "name": "",
+            "cnpj": "",
+            "onDuty": "",
+            "photos": [],
+            "contacts": [{ "areacode": "", "number": "" }],
+            "address": {
+                "street": "",
+                "neighborhood": "",
+                "number": "",
+                "zipcode": "",
+                "city": "",
+                "state": "",
+                "gpsCoordinates": { "latitude": "", "longitude": "" }
+            },
+            "manager": {
+                "name": "",
+                "crf": ""
+            },
+            "openingTimes": [{ "weekDay": "", "am": "", "pm": "" }]
+        }
+    },
+    {
+        "temporaryOnDuty": {
+            "id": "",
+            "name": "",
+            "contacts": [{ "areacode": "", "number": "" }],
+            "address": {
+                "street": "",
+                "neighborhood": "",
+                "number": "",
+                "gpsCoordinates": { "latitude": "", "longitude": "" }
+            }
+        }
+    }
+]
