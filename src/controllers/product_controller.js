@@ -1,4 +1,5 @@
 const Product = require("../models/product_model");
+const Costumer = require("../models/costumer_model");
 
 exports.products_get_all = (req, res, next) => {
     Product.find()
@@ -41,21 +42,46 @@ exports.products_get_especific = (req, res, next) => {
 
 exports.products_post = (req, res, next) => {
     const product = new Product({
+        userWhoPostedId: req.body.userWhoPostedId,
+        userWhoPostedType: req.body.userWhoPostedType,
         name: req.body.name,
         price: req.body.price,
-        photo: ""
+        photo: req.body.photoUri || "",
+        whereToBuy: req.body.whereToBuy || "",
+        postedAt: req.body.postedAt,
+        onSale: req.body.onSale
     });
     product
         .save()
-        .then(result => {
-            res.status(201).json({
+        .then(prod_result => {
+            console.log(prod_result);
+            Costumer.findByIdAndUpdate(
+                { _id: prod_result.userWhoPostedId },
+                { $push: { productsAcquired: prod_result._id } },
+                { new: true }
+            )
+                //.select("productsAcquired")
+                .exec()
+                .then(user_update_result => {
+                    res.status(200).json({
+                        message: "Product added",
+                        result: user_update_result
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(500).json({
+                        error: "erro ao add ao usuario" + err
+                    });
+                    /*  res.status(201).json({
                 message: "Product posted successfuly",
-                productId: result._id
-            });
+                result: result
+            }); */
+                });
         })
         .catch(error => {
             res.status(500).json({
-                error: error
+                error: "erro ao add o produto" + error
             });
         });
 };

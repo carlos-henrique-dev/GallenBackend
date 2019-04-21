@@ -24,7 +24,7 @@ const drugstoreByUserSchema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("drugstoreOnDuty", drugstoreByUserSchema);
+module.exports = mongoose.model("allnigth_drugstore", drugstoreByUserSchema);
 
 /* 
  {

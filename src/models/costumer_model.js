@@ -1,22 +1,32 @@
 const mongoose = require("mongoose");
 
-const productsDetails = mongoose.Schema({
+const productID = mongoose.Schema({
     product: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "products"
-    },
-    acquiredAt: {
-        acquisitionPlace: { type: String, required: true },
-        acquisitionDate: { type: Date, default: Date.now }
     }
 });
 
 const costumerSchema = mongoose.Schema({
-    userWhoPosted: { type: String, required: true },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users"
+    },
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    productsAcquired: [productsDetails]
+    productsAcquired: [productID]
 });
 
 module.exports = mongoose.model("costumer", costumerSchema);
+
+/* 
+{
+    "message": "Product posted successfuly",
+    "result": {
+        "_id": "5cbbaff0e1d93702437eabaf",
+        "costumerWhoPosted": "5cbb3eb9dc1fb035ee367d6f",
+        "name": "paracetamol",
+        "price": 10,
+        "__v": 0
+    }
+}
+*/

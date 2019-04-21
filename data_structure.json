@@ -13,11 +13,15 @@
     // produtos
     {
         "products": {
-            "id": "",
-            "name": "",
-            "price": "",
-            "photo": "",
-            "acquiredAt": { "drugstoreName": "", "drugstoreId": "" }
+            "id": "123",
+            "userWhoPosted": "userID",
+            "postedBy": "costumer/drugstoreadmin",
+            "name": "paracetamol",
+            "price": 20,
+            "photo": "foto.jpg",
+            "whereToBuy": "farmacia do jorge default: empty",
+            "postedAt": "20/4",
+            "onSale": false
         }
     },
 

@@ -6,6 +6,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 
 // importando rotas
+const userRoutes = require("./routes/user_routes");
 const costumerRoutes = require("./routes/costumers_routes");
 const productRoutes = require("./routes/products_routes");
 const drugstoreByUser = require("./routes/drugstoreByUser_routes");
@@ -25,6 +26,7 @@ console.log("conectado ao banco de dados");
 // configurando o cors (para aceitar requisição de outros locais)
 app.use(config.cors);
 // configurando as rotas
+app.use("/user", userRoutes);
 app.use("/costumers", costumerRoutes);
 app.use("/products", productRoutes);
 app.use("/onDutyDrugstores", drugstoreByUser);
