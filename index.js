@@ -1,8 +1,10 @@
 const http = require("http");
 const config = require("./src/config/config");
 const app = require("./src/app");
-const port = process.env.PORT || 3003;
+const PORT = process.env.PORT || 8081;
 
 const server = http.createServer(app);
 
-server.listen(port);
+server.listen(PORT, () => {
+    console.log(" rodando");
+});
