@@ -26,10 +26,16 @@ console.log("conectado ao banco de dados");
 // configurando o cors (para aceitar requisição de outros locais)
 app.use(config.cors);
 // configurando as rotas
+
 app.use("/user", userRoutes);
 app.use("/costumers", costumerRoutes);
 app.use("/products", productRoutes);
 app.use("/allnight_drugstore", allnight_drugstoreRoutes);
+app.use("/", (req, res, next) => {
+    res.status(200).json({
+        message: "Home"
+    });
+});
 
 // tratando caminho inexistente
 app.use((req, res, next) => {
