@@ -17,16 +17,3 @@ const costumerSchema = mongoose.Schema({
 });
 
 module.exports = mongoose.model("costumer", costumerSchema);
-
-/* 
-{
-    "message": "Product posted successfuly",
-    "result": {
-        "_id": "5cbbaff0e1d93702437eabaf",
-        "costumerWhoPosted": "5cbb3eb9dc1fb035ee367d6f",
-        "name": "paracetamol",
-        "price": 10,
-        "__v": 0
-    }
-}
-*/

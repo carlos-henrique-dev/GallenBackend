@@ -127,7 +127,16 @@ exports.user_update = (req, res, next) => {
 
 /* PARAMS: id */
 exports.user_delete = (req, res, next) => {
-    res.status(200).json({
-        ok: "ok"
-    });
+    /*  Costumer.deleteOne({ _id: req.params.userID })
+        .exec()
+        .then(result => {
+            res.status(200).json({
+                message: "Your account was successfuly deleted"
+            });
+        })
+        .catch(error => {
+            res.status(500).json({
+                error: error
+            });
+        }); */
 };

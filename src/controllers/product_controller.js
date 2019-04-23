@@ -19,8 +19,7 @@ exports.products_get_all = (req, res, next) => {
 };
 
 exports.products_get_especific = (req, res, next) => {
-    const id = req.params.productId;
-    Product.findById(id)
+    Product.findById(req.params.productId)
         .exec()
         .then(product => {
             if (product) {
@@ -60,7 +59,6 @@ exports.products_post = (req, res, next) => {
                 { $push: { productsAcquired: prod_result._id } },
                 { new: true }
             )
-                //.select("productsAcquired")
                 .exec()
                 .then(user_update_result => {
                     res.status(200).json({
@@ -73,10 +71,6 @@ exports.products_post = (req, res, next) => {
                     res.status(500).json({
                         error: "erro ao add ao usuario" + err
                     });
-                    /*  res.status(201).json({
-                message: "Product posted successfuly",
-                result: result
-            }); */
                 });
         })
         .catch(error => {
@@ -98,14 +92,13 @@ atualiza o produto, a requisição deve seguir este modelo:
 exports.products_update = (req, res, next) => {
     const id = req.params.productId;
     const updateOperations = {};
-    console.log("body", req.body);
     for (const operations of req.body) {
         updateOperations[operations.propName] = operations.value;
     }
-    Product.update({ _id: id }, { $set: updateOperations })
+    Product.updateOne({ _id: id }, { $set: updateOperations })
         .exec()
         .then(updateResult => {
-            if (product) {
+            if (updateResult) {
                 res.status(200).json({
                     message: "Product updated sucessfuly"
                 });
@@ -116,9 +109,8 @@ exports.products_update = (req, res, next) => {
             }
         })
         .catch(error => {
-            console.log(err);
             res.status(500).json({
-                error: error
+                error: "deu erro" + error
             });
         });
 };
@@ -134,7 +126,8 @@ exports.products_delete = (req, res, next) => {
                 });
             } else {
                 res.status(404).json({
-                    message: "Sorry, we couldn't find any register for this id"
+                    message: "Sorry, we couldn't find any register for this id",
+                    result: result
                 });
             }
         })

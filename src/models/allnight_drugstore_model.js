@@ -13,10 +13,11 @@ const drugstoreByUserSchema = mongoose.Schema({
     name: { type: String, required: true },
     contacts: [contactsSchema],
     onDutyOn: { type: Date, default: Date.now },
+    description: { type: String },
     address: {
         street: { type: String, required: true },
         neighborhood: { type: String },
-        number: { type: String, required: true },
+        number: { type: String },
         gpsCoordinates: {
             latitude: { type: String, required: true },
             longitude: { type: String, required: true }

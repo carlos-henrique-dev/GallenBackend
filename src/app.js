@@ -9,7 +9,7 @@ const bodyParser = require("body-parser");
 const userRoutes = require("./routes/user_routes");
 const costumerRoutes = require("./routes/costumers_routes");
 const productRoutes = require("./routes/products_routes");
-const drugstoreByUser = require("./routes/drugstoreByUser_routes");
+const allnight_drugstoreRoutes = require("./routes/allnight_drugstore_routes");
 
 // configurando middlewares
 app.use(morgan("dev")); // para fazer um log das requisições
@@ -29,7 +29,7 @@ app.use(config.cors);
 app.use("/user", userRoutes);
 app.use("/costumers", costumerRoutes);
 app.use("/products", productRoutes);
-app.use("/onDutyDrugstores", drugstoreByUser);
+app.use("/allnight_drugstore", allnight_drugstoreRoutes);
 
 // tratando caminho inexistente
 app.use((req, res, next) => {
