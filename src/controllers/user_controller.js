@@ -75,11 +75,6 @@ exports.user_login = (req, res, next) => {
                 });
             } else {
                 bcrypt.compare(req.body.password, user.password, (err, result) => {
-                    if (err) {
-                        return res.status(401).json({
-                            message: "Auth failed - password"
-                        });
-                    }
                     if (result) {
                         const token = jwt.sign(
                             {
@@ -107,6 +102,10 @@ exports.user_login = (req, res, next) => {
                         } /* else if(user.accessType === 'drugstoreadmin'){
 
                         } */
+                    } else {
+                        return res.status(401).json({
+                            message: "Auth failed - password"
+                        });
                     }
                 });
             }
