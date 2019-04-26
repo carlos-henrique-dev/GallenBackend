@@ -21,6 +21,7 @@ exports.user_signup = (req, res, next) => {
                             error: "erro pra gerar a hash" + error
                         });
                     } else {
+                        console.log("req body", req.body);
                         const user = new User({
                             email: req.body.email,
                             password: hash,
