@@ -93,6 +93,7 @@ exports.user_login = (req, res, next) => {
                                             userID: costumer.user,
                                             costumerID: costumer._id,
                                             costumerName: costumer.name,
+                                            costumerEmail: user.email,
                                             productsAcquired: costumer.productsAcquired,
                                             token: token
                                         }
