@@ -17,7 +17,7 @@ exports.user_signup = (req, res, next) => {
                 bcrypt.hash(req.body.password, 10, (error, hash) => {
                     if (error) {
                         return res.status(500).json({
-                            error: error
+                            error: "erro pra gerar a hash" + error
                         });
                     } else {
                         const user = new User({
@@ -42,7 +42,7 @@ exports.user_signup = (req, res, next) => {
                                             })
                                             .catch(error => {
                                                 res.status(500).json({
-                                                    error: error
+                                                    error: "erro pra criar a conta" + error
                                                 });
                                             });
                                     } /* else if (req.body.accessType === "drugstoreadmin") {
@@ -55,14 +55,18 @@ exports.user_signup = (req, res, next) => {
                             })
                             .catch(error => {
                                 res.status(500).json({
-                                    error: error
+                                    error: "erro pra salvar" + error
                                 });
                             });
                     }
                 });
             }
         })
-        .catch();
+        .catch(error => {
+            res.status(500).json({
+                error: error
+            });
+        });
 };
 /* PARAMS: email, password */
 exports.user_login = (req, res, next) => {
