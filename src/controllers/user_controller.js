@@ -16,6 +16,7 @@ exports.user_signup = (req, res, next) => {
             } else {
                 bcrypt.hash(req.body.password, 10, (error, hash) => {
                     if (error) {
+                        console.log("erro para gerar a hash", error);
                         return res.status(500).json({
                             error: "erro pra gerar a hash" + error
                         });
@@ -41,6 +42,7 @@ exports.user_signup = (req, res, next) => {
                                                 });
                                             })
                                             .catch(error => {
+                                                console.log("erro para criar a conta", error);
                                                 res.status(500).json({
                                                     error: "erro pra criar a conta" + error
                                                 });
@@ -48,12 +50,14 @@ exports.user_signup = (req, res, next) => {
                                     } /* else if (req.body.accessType === "drugstoreadmin") {
                                     }  */
                                 } else {
+                                    console.log("erro para completar o registro");
                                     res.status(500).json({
                                         message: "Sorry, we couldn\t  complete your registration"
                                     });
                                 }
                             })
                             .catch(error => {
+                                console.log("erro para salvar", error);
                                 res.status(500).json({
                                     error: "erro pra salvar" + error
                                 });
@@ -63,6 +67,7 @@ exports.user_signup = (req, res, next) => {
             }
         })
         .catch(error => {
+            console.log("erro para gerar a hash", error);
             res.status(500).json({
                 error: error
             });
