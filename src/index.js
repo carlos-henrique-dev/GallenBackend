@@ -1,9 +1,12 @@
+require("dotenv").config();
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const config = require("./config/config");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
+const path = require("path");
 
 // importando rotas
 const userRoutes = require("./routes/user_routes");
@@ -26,6 +29,8 @@ console.log("conectado ao banco de dados");
 // configurando o cors (para aceitar requisição de outros locais)
 app.use(config.cors);
 // configurando as rotas
+
+app.use("/files", express.static(path.resolve(__dirname, "..", "tmp", "uploads")));
 
 app.use("/user", userRoutes);
 app.use("/costumers", costumerRoutes);

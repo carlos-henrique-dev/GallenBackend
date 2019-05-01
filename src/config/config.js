@@ -5,11 +5,12 @@ const config = {
         port: process.env.PORT || 3003
     },
     db: {
-        mongoURI:
-            "mongodb+srv://henriquegalen:QDCqEP4E4jbm7r6@galen-backend-lm7ih.mongodb.net/test?retryWrites=true"
+        mongoURI: "mongodb://localhost:27017/galen"
+        //"mongodb+srv://henriquegalen:QDCqEP4E4jbm7r6@galen-backend-lm7ih.mongodb.net/test?retryWrites=true"
     },
     secret: "MyJwtSecretVeryPowerfullHaKoo21p",
-    cors: cors
+    cors: cors,
+    storage_type: "local"
 };
 
 module.exports = config;
