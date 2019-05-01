@@ -43,8 +43,8 @@ exports.products_get_especific = (req, res, next) => {
 exports.products_post = async (req, res, next) => {
     console.log("body da requisição", req.body);
     console.log("params da requisição", req.params);
-    console.log("file da requisição", req.body.file);
-    const { originalname: name, size, key, location: url = "" } = req.body.file;
+    console.log("file da requisição", req.file);
+    const { originalname: name, size, key, location: url = "" } = req.file;
 
     const postphoto = await PostPhoto.create({
         name,
@@ -53,7 +53,7 @@ exports.products_post = async (req, res, next) => {
         url
     });
 
-    // console.log("postphoto", postphoto);
+    console.log("postphoto", postphoto);
 
     const product = new Product({
         userWhoPostedId: req.body.userWhoPostedId,
