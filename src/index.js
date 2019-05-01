@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // para fazer o parse das re
 app.use(bodyParser.json()); // passando as requisições para json
 
 // conectando ao mongodb atlas
-mongoose.connect(config.db.mongoURI, {
+mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useCreateIndex: true
 });
