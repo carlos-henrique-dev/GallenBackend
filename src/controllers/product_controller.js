@@ -41,7 +41,9 @@ exports.products_get_especific = (req, res, next) => {
 };
 
 exports.products_post = async (req, res, next) => {
-    console.log("requisição", req);
+    console.log("body da requisição", req.body);
+    console.log("params da requisição", req.params);
+    console.log("file da requisição", req.file);
     const { originalname: name, size, key, location: url = "" } = req.file;
 
     const postphoto = await PostPhoto.create({
