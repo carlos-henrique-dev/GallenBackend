@@ -1,5 +1,4 @@
 const Product = require("../models/product_model");
-const Costumer = require("../models/costumer_model");
 const PostPhoto = require("../models/post_photo_model");
 
 exports.products_get_all = (req, res, next) => {
@@ -20,12 +19,13 @@ exports.products_get_all = (req, res, next) => {
 };
 
 exports.products_get_especific = (req, res, next) => {
-    Product.findById(req.params.productId)
+    Product.find({ userWhoPostedId: req.params.productId })
         .exec()
-        .then(product => {
-            if (product) {
+        .then(user_products => {
+            if (user_products) {
                 res.status(200).json({
-                    product: product
+                    count: user_products.length,
+                    product: user_products
                 });
             } else {
                 res.status(404).json({
@@ -40,24 +40,34 @@ exports.products_get_especific = (req, res, next) => {
         });
 };
 
+exports.get_user_products = (req, res, next) => {
+    Product.findById(req.params.userId)
+        .exec()
+        .then(product => {
+            if (product) {
+                res.status(200).json(product);
+            } else {
+                res.status(404).json({
+                    message: "Sorry, we couldn't find any register for this id"
+                });
+            }
+        })
+        .catch(error => {
+            res.status(500).json({
+                error: error
+            });
+        });
+};
+
 exports.products_post = async (req, res, next) => {
-    console.log("body da requisição", req.body);
-    console.log("params da requisição", req.params);
-    console.log("file da requisição", req.file);
     const { originalname: name, size, key, location: url = "" } = req.file;
 
-    const postphoto = await PostPhoto.create({
-        name,
-        size,
-        key,
-        url
-    });
-
-    console.log("postphoto", postphoto);
+    const postphoto = await PostPhoto.create({ name, size, key, url });
 
     const product = new Product({
         userWhoPostedId: req.body.userWhoPostedId,
         userWhoPostedType: req.body.userWhoPostedType,
+        userWhoPostedName: req.body.userWhoPostedName,
         name: req.body.name,
         price: req.body.price,
         photo: {
@@ -72,25 +82,7 @@ exports.products_post = async (req, res, next) => {
     product
         .save()
         .then(prod_result => {
-            //  console.log("prod result", prod_result);
-            Costumer.findByIdAndUpdate(
-                { _id: prod_result.userWhoPostedId },
-                { $push: { productsAcquired: prod_result._id } },
-                { new: true }
-            )
-                .exec()
-                .then(user_update_result => {
-                    res.status(200).json({
-                        message: "Product added",
-                        result: user_update_result
-                    });
-                })
-                .catch(err => {
-                    //console.log(err);
-                    res.status(500).json({
-                        error: "erro ao add ao usuario" + err
-                    });
-                });
+            res.status(200).json(prod_result);
         })
         .catch(error => {
             res.status(500).json({
@@ -135,17 +127,15 @@ exports.products_update = (req, res, next) => {
 };
 
 exports.products_delete = async (req, res, next) => {
-    /* const product = await  */ Product.findById(req.params.productId)
+    Product.findById(req.params.productId)
         .exec()
         .then(async resultado => {
-            // console.log("resultado", resultado);
             const photo = await PostPhoto.findById(resultado.photo.photo_id);
             await photo.remove();
 
             Product.deleteOne({ _id: req.params.productId })
                 .exec()
                 .then(result => {
-                    //  console.log("result", result);
                     if (result) {
                         res.status(200).json({
                             message: "Product deleted successfuly"

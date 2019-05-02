@@ -16,12 +16,10 @@ exports.user_signup = (req, res, next) => {
             } else {
                 bcrypt.hash(req.body.password, 10, (error, hash) => {
                     if (error) {
-                        console.log("erro para gerar a hash", error);
                         return res.status(500).json({
                             error: "erro pra gerar a hash" + error
                         });
                     } else {
-                        console.log("req body", req.body);
                         const user = new User({
                             email: req.body.email,
                             password: hash,
@@ -81,7 +79,7 @@ exports.user_login = (req, res, next) => {
         .then(user => {
             if (user === null) {
                 return res.status(401).json({
-                    message: "Auth failed - user"
+                    message: "Auth failed"
                 });
             } else {
                 bcrypt.compare(req.body.password, user.password, (err, result) => {
@@ -104,7 +102,6 @@ exports.user_login = (req, res, next) => {
                                             costumerID: costumer._id,
                                             costumerName: costumer.name,
                                             costumerEmail: user.email,
-                                            productsAcquired: costumer.productsAcquired,
                                             token: token
                                         }
                                     });
@@ -115,7 +112,7 @@ exports.user_login = (req, res, next) => {
                         } */
                     } else {
                         return res.status(401).json({
-                            message: "Auth failed - password"
+                            message: "Auth failed"
                         });
                     }
                 });

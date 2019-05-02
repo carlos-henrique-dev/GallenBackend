@@ -5,11 +5,9 @@ const multer = require("multer");
 const multerConfig = require("../config/multer");
 
 const ProductController = require("../controllers/product_controller");
-// done
 router.get("/", ProductController.products_get_all);
-// done
 router.get("/:productId", ProductController.products_get_especific);
-// done
+router.get("/:userId", ProductController.get_user_products);
 router.post(
     "/",
     authValidation,
