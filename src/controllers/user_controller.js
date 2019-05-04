@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user_model");
 const Costumer = require("../models/costumer_model");
+const Drugstore = require("../models/drugstores_model");
 
 /* PARAMS: email, password, accessType */
 exports.user_signup = (req, res, next) => {
@@ -46,8 +47,50 @@ exports.user_signup = (req, res, next) => {
                                                     error: "erro pra criar a conta" + error
                                                 });
                                             });
-                                    } /* else if (req.body.accessType === "drugstoreadmin") {
-                                    }  */
+                                    } else if (req.body.accessType === "drugstoreadmin") {
+                                        const contactsList = [];
+                                        for (contact of req.body.contacts) {
+                                            contactsList.push({
+                                                areacode: contact.areacode,
+                                                number: contact.number
+                                            });
+                                        }
+                                        const drugstore = new Drugstore({
+                                            user: user_result.id,
+                                            name: req.body.name,
+                                            cnpj: req.body.cnpj,
+                                            contacts: contactsList,
+                                            address: {
+                                                street: req.body.address.street,
+                                                neighborhood: req.body.address.neighborhood,
+                                                number: req.body.address.number,
+                                                zipcode: req.body.address.zipcode,
+                                                city: req.body.address.city,
+                                                state: req.body.address.state,
+                                                gpsCoordinates: {
+                                                    latitude: "0",
+                                                    longitude: "0"
+                                                }
+                                            },
+                                            manager: {
+                                                name: req.body.manager.name
+                                            }
+                                        });
+                                        drugstore
+                                            .save()
+                                            .then(drugstore_result => {
+                                                res.status(200).json({
+                                                    message: "Your account was created successfuly",
+                                                    drugstore_result
+                                                });
+                                            })
+                                            .catch(error => {
+                                                console.log("erro para criar a conta", error);
+                                                res.status(500).json({
+                                                    error: "erro pra criar a conta" + error
+                                                });
+                                            });
+                                    }
                                 } else {
                                     console.log("erro para completar o registro");
                                     res.status(500).json({

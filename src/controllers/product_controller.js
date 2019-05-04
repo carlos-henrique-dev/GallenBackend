@@ -85,6 +85,7 @@ exports.products_post = async (req, res, next) => {
             res.status(200).json(prod_result);
         })
         .catch(error => {
+            console.log("erro", error);
             res.status(500).json({
                 error: "erro ao add o produto" + error
             });
