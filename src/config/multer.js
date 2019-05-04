@@ -12,10 +12,10 @@ const storageTypes = {
         filename: (req, file, callback) => {
             crypto.randomBytes(16, (err, hash) => {
                 if (err) callback(err);
-                else {
-                    file.key = `${hash.toString("hex")}-${file.originalname}`;
-                    callback(null, file.key);
-                }
+
+                file.key = `${hash.toString("hex")}-${file.originalname}`;
+
+                callback(null, file.key);
             });
         }
     }),
@@ -27,7 +27,9 @@ const storageTypes = {
         key: (req, file, callback) => {
             crypto.randomBytes(16, (err, hash) => {
                 if (err) callback(err);
+
                 const fileName = `${hash.toString("hex")}-${file.originalname}`;
+
                 callback(null, fileName);
             });
         }
@@ -42,6 +44,7 @@ module.exports = {
     },
     fileFilter: (req, file, callback) => {
         const allowedMimes = ["image/jpeg", "image/pjpeg", "image/png", "image/gif"];
+
         if (allowedMimes.includes(file.mimetype)) {
             callback(null, true);
         } else {

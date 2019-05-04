@@ -60,7 +60,6 @@ exports.get_user_products = (req, res, next) => {
 };
 
 exports.products_post = async (req, res, next) => {
-    console.log("passou depois aqui");
     const { originalname: name, size, key, location: url = "" } = req.file;
 
     const postphoto = await PostPhoto.create({ name, size, key, url });
@@ -83,11 +82,9 @@ exports.products_post = async (req, res, next) => {
     product
         .save()
         .then(prod_result => {
-            console.log("\n\nprod_result", prod_result);
             res.status(200).json(prod_result);
         })
         .catch(error => {
-            console.log("erro", error);
             res.status(500).json({
                 error: "erro ao add o produto" + error
             });
