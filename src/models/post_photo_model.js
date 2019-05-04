@@ -3,7 +3,6 @@ const aws = require("aws-sdk");
 const fs = require("fs"); // modulo de I/O do node
 const path = require("path");
 const { promisify } = require("util");
-const config = require("../config/config");
 
 const s3 = new aws.S3();
 
