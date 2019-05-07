@@ -6,18 +6,22 @@ const contactsSchema = mongoose.Schema({
 });
 
 const drugstoreByUserSchema = mongoose.Schema({
-    userWhoPosted: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "costumers"
-    },
+    userWhoPostedId: { type: mongoose.Schema.Types.ObjectId, ref: "costumers" },
+    userWhoPostedType: { type: String, required: true },
+    userWhoPostedName: { type: String, required: true },
     name: { type: String, required: true },
     contacts: [contactsSchema],
     onDutyOn: { type: Date, default: Date.now },
-    description: { type: String },
+    description: { type: String, default: "" },
+    photo: {
+        photo_id: { type: mongoose.Schema.Types.ObjectId, ref: "PostPhoto" },
+        photo_url: { type: String, required: true },
+        key: { type: String, required: true }
+    },
     address: {
         street: { type: String, required: true },
-        neighborhood: { type: String },
-        number: { type: String },
+        neighborhood: { type: String, default: "" },
+        number: { type: String, default: "" },
         gpsCoordinates: {
             latitude: { type: String, required: true },
             longitude: { type: String, required: true }

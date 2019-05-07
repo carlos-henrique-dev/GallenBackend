@@ -8,5 +8,3 @@ server.use(app);
 
 server.listen(config.app);
 //server.listen(3006, "192.168.1.107");
-
-//http://localhost:3003

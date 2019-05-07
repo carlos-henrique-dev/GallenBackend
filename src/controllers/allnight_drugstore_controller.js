@@ -1,4 +1,5 @@
 const allnightDrugstore = require("../models/allnight_drugstore_model");
+const PostPhoto = require("../models/post_photo_model");
 
 exports.allnight_drugstore_getall = (req, res, next) => {
     allnightDrugstore
@@ -40,29 +41,45 @@ exports.allnight_drugstore_getespecific = (req, res, next) => {
         });
 };
 
-exports.allnight_drugstore_post = (req, res, next) => {
+exports.allnight_drugstore_post = async (req, res, next) => {
+    const { originalname: name, size, key, location: url = "" } = req.file;
+
+    const postphoto = await PostPhoto.create({ name, size, key, url });
+
+    const contactsParse = JSON.parse(req.body.contacts);
+    const addressParse = JSON.parse(req.body.address);
+
     const contactsList = [];
-    for (contact of req.body.contacts) {
+    for (contact of contactsParse) {
         contactsList.push({
             areacode: contact.areacode,
             number: contact.number
         });
     }
+
     const newOnDutyDrugStore = new allnightDrugstore({
-        userWhoPosted: req.body.userWhoPosted,
+        userWhoPostedId: req.body.userWhoPostedId,
+        userWhoPostedType: req.body.userWhoPostedType,
+        userWhoPostedName: req.body.userWhoPostedName,
         name: req.body.drugstorename,
-        contacts: contactsList,
-        description: req.body.descriptio,
+        contacts: contactsParse,
+        description: req.body.description || "",
+        photo: {
+            photo_id: postphoto._id,
+            photo_url: postphoto.url,
+            key: postphoto.key
+        },
         address: {
-            street: req.body.address.streetName,
-            neighborhood: req.body.address.neighborhoodName,
-            number: req.body.address.drugstoreNuber,
+            street: addressParse.streetName,
+            neighborhood: addressParse.neighborhoodName,
+            number: addressParse.drugstoreNuber,
             gpsCoordinates: {
-                latitude: req.body.address.gpsCoordinates.latitude,
-                longitude: req.body.address.gpsCoordinates.longitude
+                latitude: addressParse.gpsCoordinates.latitude,
+                longitude: addressParse.gpsCoordinates.longitude
             }
         }
     });
+
     newOnDutyDrugStore
         .save()
         .then(result => {
