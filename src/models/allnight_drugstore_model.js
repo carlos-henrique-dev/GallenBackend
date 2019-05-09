@@ -1,22 +1,18 @@
 const mongoose = require("mongoose");
 
-const contactsSchema = mongoose.Schema({
-    areacode: { type: String },
-    number: { type: String, required: true }
-});
-
 const drugstoreByUserSchema = mongoose.Schema({
     userWhoPostedId: { type: mongoose.Schema.Types.ObjectId, ref: "costumers" },
     userWhoPostedType: { type: String, required: true },
     userWhoPostedName: { type: String, required: true },
     name: { type: String, required: true },
-    contacts: [contactsSchema],
+    contact: { areacode: { type: String, default: "" }, number: { type: String, required: true } },
+    type: { type: String, default: "temporary" },
     onDutyOn: { type: Date, default: Date.now },
     description: { type: String, default: "" },
     photo: {
         photo_id: { type: mongoose.Schema.Types.ObjectId, ref: "PostPhoto" },
-        photo_url: { type: String, required: true },
-        key: { type: String, required: true }
+        photo_url: { type: String, default: "" },
+        key: { type: String, default: "" }
     },
     address: {
         street: { type: String, required: true },
@@ -30,19 +26,3 @@ const drugstoreByUserSchema = mongoose.Schema({
 });
 
 module.exports = mongoose.model("allnigth_drugstore", drugstoreByUserSchema);
-
-/* 
- {
-        "temporaryOnDuty": {
-            "id": "",
-            "name": "",
-            "contacts": [{ "areacode": "", "number": "" }],
-            "address": {
-                "street": "",
-                "neighborhood": "",
-                "number": "",
-                "gpsCoordinates": { "latitude": "", "longitude": "" }
-            }
-        }
-    }
-*/

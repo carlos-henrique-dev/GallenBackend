@@ -42,27 +42,24 @@ exports.allnight_drugstore_getespecific = (req, res, next) => {
 };
 
 exports.allnight_drugstore_post = async (req, res, next) => {
-    const { originalname: name, size, key, location: url = "" } = req.file;
+    let postphoto = {};
 
-    const postphoto = await PostPhoto.create({ name, size, key, url });
+    if (req.file !== undefined) {
+        const { originalname: name, size, key, location: url } = req.file;
 
-    const contactsParse = JSON.parse(req.body.contacts);
-    const addressParse = JSON.parse(req.body.address);
-
-    const contactsList = [];
-    for (contact of contactsParse) {
-        contactsList.push({
-            areacode: contact.areacode,
-            number: contact.number
-        });
+        postphoto = await PostPhoto.create({ name, size, key, url });
     }
+
+    console.log("postphoto", postphoto);
+
+    const addressParse = JSON.parse(req.body.address);
 
     const newOnDutyDrugStore = new allnightDrugstore({
         userWhoPostedId: req.body.userWhoPostedId,
         userWhoPostedType: req.body.userWhoPostedType,
         userWhoPostedName: req.body.userWhoPostedName,
         name: req.body.drugstorename,
-        contacts: contactsParse,
+        contact: JSON.parse(req.body.contact),
         description: req.body.description || "",
         photo: {
             photo_id: postphoto._id,
@@ -131,22 +128,31 @@ exports.allnight_drugstore_update = (req, res, next) => {
         });
 };
 
-exports.allnight_drugstore_delete = (req, res, next) => {
-    const id = req.params.allnightdrugstoreID;
+exports.allnight_drugstore_delete = async (req, res, next) => {
     allnightDrugstore
-        .deleteOne({ _id: id })
+        .findById(req.params.allnightdrugstoreID)
         .exec()
-        .then(result => {
-            if (result) {
-                res.status(200).json({
-                    message: "Post deleted successfuly",
-                    result: result
-                });
-            } else {
-                res.status(404).json({
-                    message: "Sorry, we couldn't find any register for this id"
-                });
+        .then(async result => {
+            if (result.photo.photo_id !== undefined) {
+                const photo = await PostPhoto.findById(result.photo.photo_id);
+                await photo.remove();
             }
+
+            allnightDrugstore
+                .deleteOne({ _id: req.params.allnightdrugstoreID })
+                .exec()
+                .then(result => {
+                    if (result) {
+                        res.status(200).json({
+                            message: "Post deleted successfuly",
+                            result: result
+                        });
+                    } else {
+                        res.status(404).json({
+                            message: "Sorry, we couldn't find any register for this id"
+                        });
+                    }
+                });
         })
         .catch(error => {
             res.status(500).json({
