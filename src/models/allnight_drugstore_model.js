@@ -19,8 +19,8 @@ const drugstoreByUserSchema = mongoose.Schema({
         neighborhood: { type: String, default: "" },
         number: { type: String, default: "" },
         gpsCoordinates: {
-            latitude: { type: String, required: true },
-            longitude: { type: String, required: true }
+            latitude: { type: String, default: "" },
+            longitude: { type: String, default: "" }
         }
     }
 });
