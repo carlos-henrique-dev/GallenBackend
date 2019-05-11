@@ -100,6 +100,8 @@ atualiza o produto, a requisição deve seguir este modelo:
 	}
 ]
 */
+
+// TODO: ver como atualizar uma foto
 exports.products_update = (req, res, next) => {
     const id = req.params.productId;
     const updateOperations = {};

@@ -13,6 +13,7 @@ const userRoutes = require("./routes/user_routes");
 const costumerRoutes = require("./routes/costumers_routes");
 const productRoutes = require("./routes/products_routes");
 const allnight_drugstoreRoutes = require("./routes/allnight_drugstore_routes");
+const drugstoreRoutes = require("./routes/drugstores_routes");
 
 // configurando middlewares
 app.use(morgan("dev")); // para fazer um log das requisições
@@ -36,6 +37,7 @@ app.use("/user", userRoutes);
 app.use("/costumers", costumerRoutes);
 app.use("/products", productRoutes);
 app.use("/allnight_drugstore", allnight_drugstoreRoutes);
+app.use("/drugstore", drugstoreRoutes);
 
 // tratando caminho inexistente
 app.use((req, res, next) => {

@@ -145,14 +145,24 @@ exports.user_login = (req, res, next) => {
                                             costumerID: costumer._id,
                                             costumerName: costumer.name,
                                             costumerEmail: user.email,
+                                            userType: "costumer",
                                             token: token
                                         }
                                     });
-                                })
-                                .catch();
-                        } /* else if(user.accessType === 'drugstoreadmin'){
-
-                        } */
+                                });
+                        } else if (user.accessType === "drugstoreadmin") {
+                            Drugstore.findOne({ user: user._id })
+                                .exec()
+                                .then(drugstore => {
+                                    console.log("drugstore: ", drugstore);
+                                    res.status(200).json({
+                                        message: "Auth successfull",
+                                        response: drugstore,
+                                        userType: "drugstoreadmin",
+                                        token: token
+                                    });
+                                });
+                        }
                     } else {
                         return res.status(401).json({
                             message: "Auth failed"
