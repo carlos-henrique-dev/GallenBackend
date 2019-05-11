@@ -18,9 +18,8 @@ exports.products_get_all = (req, res, next) => {
         });
 };
 
-exports.products_get_especific = (req, res, next) => {
-    console.log("param", req.params);
-    Product.find({ _id: req.params.productId })
+exports.get_user_products = (req, res, next) => {
+    Product.find({ userWhoPostedId: req.params.productId })
         .exec()
         .then(user_products => {
             if (user_products) {
@@ -41,7 +40,7 @@ exports.products_get_especific = (req, res, next) => {
         });
 };
 
-exports.get_user_products = (req, res, next) => {
+exports.products_get_especific = (req, res, next) => {
     Product.findById(req.params.userId)
         .exec()
         .then(product => {
