@@ -104,11 +104,13 @@ atualiza o produto, a requisição deve seguir este modelo:
 
 // TODO: ver como atualizar uma foto
 exports.products_update = (req, res, next) => {
+    console.log("body", req.body);
     const id = req.params.productId;
     const updateOperations = {};
     for (const operations of req.body) {
         updateOperations[operations.propName] = operations.value;
     }
+    console.log("update", updateOperations);
     Product.updateOne({ _id: id }, { $set: updateOperations })
         .exec()
         .then(updateResult => {
