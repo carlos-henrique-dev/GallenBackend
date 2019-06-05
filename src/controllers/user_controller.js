@@ -78,7 +78,7 @@ exports.user_signup = (req, res, next) => {
                     drugstore
                       .save()
                       .then(drugstore_result => {
-                        res.status(200).json({
+                        res.status(201).json({
                           message: "Your account was created successfuly",
                           drugstore_result
                         });
