@@ -156,9 +156,11 @@ exports.user_login = (req, res, next) => {
                   console.log("drugstore: ", drugstore);
                   res.status(200).json({
                     message: "Auth successfull",
-                    response: drugstore,
-                    userType: "drugstoreadmin",
-                    token: token
+                    response: {
+                      drugstore,
+                      userType: "drugstoreadmin",
+                      token: token
+                    }
                   });
                 });
             }
