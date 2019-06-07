@@ -8,11 +8,13 @@ exports.postdrugstorePhoto = async (req, res, next) => {
   const newPhoto = { photo_url: postphoto.url, key: postphoto.key };
 
   Drugstore.update({ _id: req.body.id }, { photo: newPhoto }, { new: true })
-    .then(res => {
-      console.log("res", res);
+    .then(result => {
+      res.status(200).json(result);
     })
-    .catch(err => {
-      console.log("erro", err);
+    .catch(error => {
+      res.status(500).json({
+        error: `erro ${error}`
+      });
     });
 };
 
@@ -58,16 +60,15 @@ atualiza o produto, a requisição deve seguir este modelo:
 
 // TODO: ver como atualizar uma foto
 exports.drugstore_update = (req, res, next) => {
-  console.log("body", req.body);
   const id = req.params.drugstoreID;
   const updateOperations = {};
   for (const operations of req.body) {
     updateOperations[operations.propName] = operations.value;
   }
-  console.log("update", updateOperations);
-  /*   Drugstore.updateOne({ _id: id }, { $set: updateOperations })
+  Drugstore.updateOne({ _id: id }, { $set: updateOperations }, { new: true })
     .exec()
     .then(updateResult => {
+      console.log("update result", updateResult);
       if (updateResult) {
         res.status(200).json({
           message: "Drugstore updated sucessfuly"
@@ -82,7 +83,7 @@ exports.drugstore_update = (req, res, next) => {
       res.status(500).json({
         error: "deu erro" + error
       });
-    }); */
+    });
 };
 
 // params: [ { "propName": "allNight", "value": true/false } ]
