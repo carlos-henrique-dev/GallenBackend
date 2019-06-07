@@ -2,6 +2,19 @@ const Drugstore = require("../models/drugstores_model");
 
 exports.drugstore_delete = (req, res, next) => {};
 
+exports.drugstore_getallnightstatus = (req, res, next) => {
+  console.log("params", req.params);
+  Drugstore.findById(req.params.drugstoreID, "allNigth")
+    .then(result => {
+      res.status(200).json(result);
+    })
+    .catch(error => {
+      res.status(500).json({
+        error: error
+      });
+    });
+};
+
 /* 
 atualiza o produto, a requisição deve seguir este modelo:
 [
@@ -50,7 +63,6 @@ exports.drugstore_setAllNight = (req, res, next) => {
     updateOperations[operations.propName] = operations.value;
   }
 
-  console.log("update", updateOperations);
   Drugstore.updateOne({ _id: id }, { $set: updateOperations })
     .exec()
     .then(updateResult => {

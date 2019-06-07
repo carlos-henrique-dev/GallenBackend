@@ -6,6 +6,6 @@ const server = express();
 
 server.use(app);
 
-server.listen(config.app);
+//server.listen(config.app);
 //server.listen(process.env.APP_URL);
-//server.listen(3003);
+server.listen(3003);
