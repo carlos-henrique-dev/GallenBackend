@@ -10,6 +10,23 @@ exports.drugstore_getallnightstatus = (req, res, next) => {
     })
     .catch(error => {
       res.status(500).json({
+        error: `erro ${error}`
+      });
+    });
+};
+
+exports.drugstore_getall = (req, res, next) => {
+  Drugstore.find()
+    .exec()
+    .then(drugstores_list => {
+      const response = {
+        count: drugstores_list.length,
+        drugstores: drugstores_list
+      };
+      res.status(200).json(response);
+    })
+    .catch(error => {
+      res.status(500).json({
         error: error
       });
     });

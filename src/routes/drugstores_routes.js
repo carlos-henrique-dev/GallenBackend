@@ -6,6 +6,8 @@ const DrugstoreController = require("../controllers/drugstores_controller");
 
 router.delete("/:drugstoreID", authvalidation, DrugstoreController.drugstore_delete);
 
+router.get("/", DrugstoreController.drugstore_getall);
+
 router.get("/:drugstoreID", authvalidation, DrugstoreController.drugstore_getallnightstatus);
 
 router.patch("/:drugstoreID", authvalidation, DrugstoreController.drugstore_update);

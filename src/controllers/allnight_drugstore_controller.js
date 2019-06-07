@@ -1,18 +1,35 @@
 const allnightDrugstore = require("../models/allnight_drugstore_model");
+const Drugstore = require("../models/drugstores_model");
+
 const PostPhoto = require("../models/post_photo_model");
 
-exports.allnight_drugstore_getall = (req, res, next) => {
+exports.allnight_drugstore_getall = async (req, res, next) => {
+  let userposted = [],
+    drugstoreposted = [];
+
   allnightDrugstore
     .find()
     .exec()
-    .then(drugstores_list => {
-      const count_list = {
-        count: drugstores_list.length,
-        list_of_drugstores: drugstores_list
+    .then(userdrugstores_list => {
+      userposted = [...userdrugstores_list];
+    })
+    .then(async () => {
+      await Drugstore.find({ allNigth: true })
+        .exec()
+        .then(drugstores_list => {
+          drugstoreposted = [...drugstores_list];
+        });
+    })
+    .then(() => {
+      const drugstoresconcated = [...drugstoreposted, ...userposted];
+      const response = {
+        count: drugstoresconcated.length,
+        drugstores: drugstoresconcated
       };
-      res.status(200).json(count_list);
+      res.status(200).json(response);
     })
     .catch(error => {
+      console.log("error", error);
       res.status(500).json({
         error: error
       });
@@ -49,8 +66,6 @@ exports.allnight_drugstore_post = async (req, res, next) => {
 
     postphoto = await PostPhoto.create({ name, size, key, url });
   }
-
-  console.log("postphoto", postphoto);
 
   const addressParse = JSON.parse(req.body.address);
 
