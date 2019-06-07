@@ -1,6 +1,20 @@
 const Drugstore = require("../models/drugstores_model");
+const PostPhoto = require("../models/post_photo_model");
 
-exports.drugstore_delete = (req, res, next) => {};
+exports.postdrugstorePhoto = async (req, res, next) => {
+  const { originalname: name, size, key, location: url = "" } = req.file;
+
+  const postphoto = await PostPhoto.create({ name, size, key, url });
+  const newPhoto = { photo_url: postphoto.url, key: postphoto.key };
+
+  Drugstore.update({ _id: req.body.id }, { photo: newPhoto }, { new: true })
+    .then(res => {
+      console.log("res", res);
+    })
+    .catch(err => {
+      console.log("erro", err);
+    });
+};
 
 exports.drugstore_getallnightstatus = (req, res, next) => {
   console.log("params", req.params);
