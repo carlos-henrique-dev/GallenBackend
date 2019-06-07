@@ -13,7 +13,7 @@ exports.postdrugstorePhoto = async (req, res, next) => {
     })
     .catch(error => {
       res.status(500).json({
-        error: `erro ${error}`
+        error: `erro ${error}` /* ss */
       });
     });
 };
