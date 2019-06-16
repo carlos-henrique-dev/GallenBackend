@@ -7,7 +7,7 @@ exports.postdrugstorePhoto = async (req, res, next) => {
   const postphoto = await PostPhoto.create({ name, size, key, url });
   const newPhoto = { photo_url: postphoto.url, key: postphoto.key };
 
-  Drugstore.update({ _id: req.body.id }, { photo: newPhoto }, { new: true })
+  Drugstore.update({ _id: req.body.id }, { photo: newPhoto })
     .then(result => {
       res.status(200).json(result);
     })
